@@ -1,5 +1,5 @@
 from flask import Flask
-from models import db,UserLogin,DbBarrier
+from models import db,UserLogin
 from flask import Flask, flash, redirect, render_template, request, session, abort
 import os
 import json
@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://barrier_db:123@localhost:5432/barrier_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sacco_save:123@localhost:5432/sacco_save'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
