@@ -1,5 +1,5 @@
 from flask import Flask
-from models import db,UserLogin,DbBarrier
+from models import db,UserLogin
 from flask import Flask, flash, redirect, render_template, request, session, abort
 import os
 import json
@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://barrier_db:123@localhost:5432/barrier_db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sacco_save:123@localhost:5432/sacco_save'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
@@ -16,46 +16,35 @@ db.init_app(app)
 @app.route('/')
 def home():
     if not session.get('logged_in'):
-        return render_template('login.html')
+        return render_template('index.html')
     else:
-        return render_template('progress.html')
+        return render_template('home.html')
  
-@app.route('/login', methods=['POST'])
+@app.route('/VerifyLogin',methods=['POST'])
 def do_admin_login():
-    #checking whether user exists................................
-    my_user=db.session.query(UserLogin).filter_by(vc_user_name=request.form['username'],vc_pass_word=request.form['password']).first()
-    if my_user is not None:
-        #success login.................
-        session['logged_in'] = True
-        session['user_name'] =my_user.vc_user_name
-    else:
-        #invalid login.................
-        flash('wrong password!')
-    return home()
+	if request.form['account_no'] == '' or request.form['user_pass'] == '':
+		return render_template('index.html', my_var=request.args.get('invalid_detail', 'EMPTY_FIELDS'))	
+	else:	
+		try:
+			my_user=db.session.query(UserLogin).filter_by(nu_account_no=request.form['account_no'],vc_pass_word=request.form['user_pass']).first()
+			if my_user is not None:
+				session['logged_in']=True
+				session['account_no']=my_user.nu_account_no
+				session['full_name']=my_user.vc_full_name
+				return home()
+			else:
+				pass
+	    		return render_template('index.html', my_var=request.args.get('invalid_detail', 'INVALID_USER'))
+		except:
+			pass
+        	return render_template('index.html', my_var=request.args.get('invalid_detail', 'INVALID_USER'))
 
 @app.route("/logout")
 def logout():
     #logout user
     session['logged_in'] = False
     return home() 
-#received data to end point
-@app.route('/receive_remind', methods=['GET', 'POST'])
-def receive_remind():
-    if request.method == 'POST':
-        try:
-            #retreiving json content
-            content = request.get_json()
-            #inserting data in the table.....................
-            post_data=DbBarrier(content['dt_pick_date'],content['phone_No'],'N','')
-            db.session.add(post_data) 
-            db.session.commit()
-            return "Data is posted successfully"
-        except:   
-            return "Data is failed to be posted" 
-
-    else:
-        pass
-   
+ 
  
 if __name__ == "__main__":
     app.secret_key = os.urandom(12)

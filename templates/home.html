@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Lets Build Your Future</title>
+<link rel="stylesheet" href="/static/css/home.css" type="text/css" />
+<link rel="stylesheet" type="text/css" href="/static/vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+<link rel="stylesheet" type="text/css" href="/static/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0" />
+</head>
+{% block body %}
+<body>
+
+		<section id="body" class="width">
+			<aside id="sidebar" class="column-left">
+
+			<header>
+				<h1><a href="#">TISIIG</a></h1>
+				<h2>SACCO SAVINGS</h2>
+            </header>
+			<nav id="mainnav">
+  		      <ul>
+              <li class="selected-item"><a href="index.html">Home</a></li>
+              <li><a href="examples.html">Add A Member</a></li>
+             <li><a href="#">Filter Deposit</a></li>
+             <li><a href="#">Your Loan</a></li>
+             <li><a href="#">Logout</a></li>
+             </ul>
+			</nav>			
+			</aside>
+			<section id="content" class="column-right">  		
+	        <article>	
+			<h2>Your Account Outstanding</h2>
+			<div class="article-info">Logged In AS {% print session['full_name'] %} By Account No:{% print session['account_no'] %}</div>
+
+            <p>Welcome to anatine, a free premium valid CSS3 &amp; HTML5 web template from <a href="http://zypopwebtemplates.com/" title="ZyPOP">ZyPOP</a>. This responsive template is completely <strong>free</strong> to use permitting a link remains back to  <a href="http://zypopwebtemplates.com/" title="ZyPOP">http://zypopwebtemplates.com/</a>.</p>
+
+<p>Should you wish to use this template unbranded you can buy a template license from our website for 8.00 GBP, this will allow you remove all branding related to our site, for more information about this see below.</p>	
+            
+            <p>This template has been tested in:</p>
+
+
+            <ul class="styledlist">
+                <li>Firefox</li>
+                <li>Opera</li>
+                <li>IE</li>
+ 		<li>Safari</li>
+                <li>Chrome</li>
+            </ul>
+
+		<a href="#" class="button">Read more</a>
+		<a href="#" class="button button-reversed">Comments</a>
+
+		</article>
+			<footer class="clear">
+				<p>&copy; 2018 me u softwareplus ltd. <a href="http://www.meusoftwareplus.com/">www.meusoftwareplus.com</a> by meu developer</p>
+			</footer>
+
+		</section>
+
+		<div class="clear"></div>
+
+	</section>
+</body>
+</html>
+{% endblock %}	
