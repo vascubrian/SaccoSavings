@@ -31,17 +31,23 @@ class UserLogin(BaseModel, db.Model):
     """Model for the mst_logn table"""
     __tablename__ = 'mst_login'
 
-    nu_user_id = db.Column("nu_user_id",db.Integer,primary_key = True)
-    vc_user_name = db.Column(db.String)
-    vc_pass_word = db.Column(db.String)
-    vc_user_email = db.Column(db.String)
-    vc_user_type = db.Column(db.String)
-    def __init__(self,nu_user_id,vc_user_name,vc_pass_word,vc_user_email,vc_user_type):
-        self.nu_user_id=nu_user_id
-        self.vc_user_name=vc_user_name
+    nu_account_no = db.Column("nu_account_no",db.Integer,primary_key = True)
+    dt_date = db.Column(db.DateTime)
+    vc_full_name = db.Column(db.String)
+    vc_gender = db.Column(db.String)
+    vc_contact = db.Column(db.String)
+    vc_address = db.Column(db.String)
+    vc_pass_word=db.Column(db.String)
+    user_type = db.Column(db.String)
+    def __init__(self,nu_account_no,dt_date,vc_full_name,vc_gender,vc_contact,vc_address,vc_pass_word,user_type):
+        self.nu_account_no=nu_account_no
+        self.dt_date=dt_date
+        self.vc_full_name=vc_full_name
+        self.vc_gender=vc_gender
+        self.vc_contact=vc_contact
+        self.vc_address=vc_address
         self.vc_pass_word=vc_pass_word
-        self.vc_user_email=vc_user_email
-        self.vc_user_type=vc_user_type
+        self.user_type=user_type
 
 
 
