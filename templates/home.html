@@ -11,57 +11,289 @@
 </head>
 {% block body %}
 <body>
-
-		<section id="body" class="width">
-			<aside id="sidebar" class="column-left">
-
-			<header>
-				<h1><a href="#">TISIIG</a></h1>
-				<h2>SACCO SAVINGS</h2>
-            </header>
-			<nav id="mainnav">
-  		      <ul>
-              <li class="selected-item"><a href="index.html">Home</a></li>
-              <li><a href="examples.html">Add A Member</a></li>
-             <li><a href="#">Filter Deposit</a></li>
-             <li><a href="#">Your Loan</a></li>
-             <li><a href="#">Logout</a></li>
-             </ul>
-			</nav>			
-			</aside>
-			<section id="content" class="column-right">  		
-	        <article>	
-			<h2>Your Account Outstanding</h2>
-			<div class="article-info">Logged In AS {% print session['full_name'] %} By Account No:{% print session['account_no'] %}</div>
-
-            <p>Welcome to anatine, a free premium valid CSS3 &amp; HTML5 web template from <a href="http://zypopwebtemplates.com/" title="ZyPOP">ZyPOP</a>. This responsive template is completely <strong>free</strong> to use permitting a link remains back to  <a href="http://zypopwebtemplates.com/" title="ZyPOP">http://zypopwebtemplates.com/</a>.</p>
-
-<p>Should you wish to use this template unbranded you can buy a template license from our website for 8.00 GBP, this will allow you remove all branding related to our site, for more information about this see below.</p>	
-            
-            <p>This template has been tested in:</p>
-
-
-            <ul class="styledlist">
-                <li>Firefox</li>
-                <li>Opera</li>
-                <li>IE</li>
- 		<li>Safari</li>
-                <li>Chrome</li>
-            </ul>
-
-		<a href="#" class="button">Read more</a>
-		<a href="#" class="button button-reversed">Comments</a>
-
-		</article>
-			<footer class="clear">
-				<p>&copy; 2018 me u softwareplus ltd. <a href="http://www.meusoftwareplus.com/">www.meusoftwareplus.com</a> by meu developer</p>
-			</footer>
-
-		</section>
-
-		<div class="clear"></div>
-
-	</section>
+<secton id="body">
+<aside id="column_left">
+<header>
+<h1><a href="#">TISIG</a></h1>
+<h2>Treasure Island Savings And Investment Group</h2>
+</header>
+<nav id="mainnav">
+<ul>
+<li class="selected-item1"><a href="/">Home</a></li>
+<li class="selected-item2" ><a href="{{ url_for('SwitchPanel', my_var='AddMember') }}">Add A Member</a></li>
+<li class="selected-item3"><a href="{{ url_for('SwitchPanel', my_var='FilterDeposit') }}">Add Deposit</a></li>
+<li class="selected-item4"><a href="{{ url_for('SwitchPanel', my_var='ViewMembers') }}">View All Members</a></li>
+<li class="selected-item5"><a href="{{ url_for('SwitchPanel', my_var='ViewDeposits') }}">View All Deposits</a></li>
+<li class="selected-item6"><a href="{{ url_for('SwitchPanel', my_var='AddLoan') }}">Add Loan</a></li>
+<li><a href="#">Your Loan</a></li>
+<li><a onclick="getConfirmation();">Logout</a></li>
+</ul>
+</nav>		     
+</aside>
+<aside id="column_right">
+<h2>Your Account Outstanding</h2>
+<div class="article-info">Logged In AS {% print session['full_name'] %} By Account No:{% print session['account_no'] %}</div>    
+{% if my_var=="AddMember" or my_var=="EXISTS" or my_var=="INVALID_ENTRY" or my_var=="EMPTY_FIELDS"%}
+<style>
+nav#mainnav li.selected-item2  {
+border-bottom:none;
+}
+nav#mainnav li.selected-item2 a,
+nav#mainnav li.selected-item2 a:hover {
+color:#80B763;
+font-weight:bold;
+background: #fff;
+}      
+</style>    
+            <form id="contact" action="/EnrollMember" method="post">
+            <h3>Enroll Members</h3>
+             {% if my_var=="EXISTS"%}
+             <h4>Account Number Already Exists</h4>
+             {%elif my_var=="INVALID_ENTRY"%}
+             <h4>Invalid Entry</h4>
+             {%elif my_var=="EMPTY_FIELDS"%}
+             <h4>Account Number and Member Full Name is required !!</h4>
+             {%endif%}
+            <fieldset>
+            <input placeholder="Account Number" value="{{request.form['account_no']}}" type="text" name="account_no" tabindex="1" required autofocus>
+            </fieldset>
+            <fieldset>
+            <input placeholder="Full Name" type="text"  value="{{request.form['full_name']}}" name="full_name" tabindex="2" required>
+            </fieldset>
+            <fieldset>
+            <select name="gender" tabindex="2" required>
+             <option>{{request.form['gender']}}</option>
+             <option>MALE</option>  
+             <option>FEMALE</option>
+            </select>
+            </fieldset>
+            <fieldset>
+            <input placeholder="Your Phone Number (optional)"  value="{{request.form['contact']}}" name="contact" type="tel" tabindex="3" required>
+            </fieldset>
+            <fieldset>
+            <input placeholder="Address" type="text"  value="{{request.form['address']}}" name="address" tabindex="4" required>
+            </fieldset>
+             <fieldset>
+            <input placeholder="Email" type="email"  value="{{request.form['email']}}" name="email" tabindex="4" required>
+            </fieldset>
+             <fieldset>
+            <input placeholder="Password" type="password"  value="{{request.form['password']}}" name="password" tabindex="4" required>
+            </fieldset>
+            <fieldset>
+            <input placeholder="Reg Date" type="date"  value="{{request.form['reg_date']}}" name="reg_date" tabindex="4" required>
+            </fieldset>    
+            <fieldset>
+            <select name="user_type" tabindex="2" required>
+             <option>{{request.form['user_type']}}</option>    
+             <option>ADMIN</option>  
+             <option>MEMBER</option>
+            </select>
+            </fieldset>
+            <fieldset>
+            <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
+            </fieldset>
+           </form> 
+{% elif my_var=="AddLoan" or my_var=="LOAN-EXISTS" or my_var=="LOAN-INVALID_ENTRY" or my_var=="LOAN-EMPTY_FIELDS"%}
+<style>
+nav#mainnav li.selected-item6  {
+border-bottom:none;
+}
+nav#mainnav li.selected-item6 a,
+nav#mainnav li.selected-item6 a:hover {
+color:#80B763;
+font-weight:bold;
+background: #fff;
+}      
+</style>    
+            <form id="contact" action="/AddLoan" method="post">
+            <h3>Add Loan</h3>
+             {% if my_var=="LOAN-EXISTS"%}
+             <h4>Account Number Does not Exists</h4>
+             {%elif my_var=="LOAN-INVALID_ENTRY"%}
+             <h4>Invalid Entry</h4>
+             {%elif my_var=="LOAN-EMPTY_FIELDS"%}
+             <h4>Account Number and Deposit Amount is required !!</h4>
+             {%endif%}
+            <fieldset>
+            <select name="account_no" tabindex="2" required>
+             <option>{{request.form['account_no']}}</option> 
+             {% for my_member in my_member %}
+             <option>{{my_member.nu_account_no}}</option>  
+             {%endfor%}
+            </select>
+            </fieldset>
+            <fieldset>
+            <input placeholder="Loan Amount Ugx"  value="{{request.form['amt']}}" name="amt" type="number" tabindex="3" required>
+            </fieldset>
+            <fieldset>
+            <select name="added_by" tabindex="4" required>   
+            <option>{{request.form['added_by']}}</option>
+            <option>BUYING LAND</option> 
+            <option>DIRECT LOAN</option>  
+            </select> 
+             </fieldset>
+            <fieldset>
+            <input placeholder="Reg Date" type="date"  value="{{request.form['reg_date']}}" name="reg_date" tabindex="4" required>
+            </fieldset> 
+            <fieldset>
+            <input placeholder="Cashier Name" type="text"  value="{{session['full_name']}}" name="cashier_name" tabindex="4" required>
+            </fieldset>
+             <fieldset>
+            <TextArea placeholder="Loan Full Description" type="text" name="loan_desc" tabindex="4" required>{{request.form['loan_desc']}}</TextArea>
+            </fieldset>   
+            <fieldset>
+            <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
+            </fieldset>
+           </form>      
+{%elif my_var=="FilterDeposit" or my_var=="DEP-EXISTS" or my_var=="DEP-INVALID_ENTRY" or my_var=="DEP-EMPTY_FIELDS"%}
+<style>
+nav#mainnav li.selected-item3  {
+border-bottom:none;
+}
+nav#mainnav li.selected-item3 a,
+nav#mainnav li.selected-item3 a:hover {
+color:#80B763;
+font-weight:bold;
+background: #fff;
+}      
+</style>    
+            <form id="contact" action="/FilterDeposit" method="post">
+            <h3>Add Deposit</h3>
+             {% if my_var=="DEP-EXISTS"%}
+             <h4>Account Number Does not Exists</h4>
+             {%elif my_var=="DEP-INVALID_ENTRY"%}
+             <h4>Invalid Entry</h4>
+             {%elif my_var=="DEP-EMPTY_FIELDS"%}
+             <h4>Account Number and Deposit Amount is required !!</h4>
+             {%endif%}
+            <fieldset>
+            <select name="account_no" tabindex="2" required>
+             <option>{{request.form['account_no']}}</option> 
+             {% for my_member in my_member %}
+             <option>{{my_member.nu_account_no}}</option>  
+             {%endfor%}
+            </select>
+            </fieldset>
+            <fieldset>
+            <input placeholder="Amount Deposited Ugx"  value="{{request.form['amt']}}" name="amt" type="number" tabindex="3" required>
+            </fieldset>
+            <fieldset>
+            <input placeholder="Deposited By" type="text"  value="{{request.form['deposited_by']}}" name="deposited_by" tabindex="4" required>
+            </fieldset>
+            <fieldset>
+            <input placeholder="Reg Date" type="date"  value="{{request.form['reg_date']}}" name="reg_date" tabindex="4" required>
+            </fieldset> 
+            <fieldset>
+            <input placeholder="Cashier Name" type="text"  value="{{session['full_name']}}" name="cashier_name" tabindex="4" required>
+            </fieldset>
+            <fieldset>
+            <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
+            </fieldset>
+           </form>   
+{%elif my_var=="ViewMembers" %}
+<style>   
+nav#mainnav li.selected-item4  {
+border-bottom:none;
+}
+nav#mainnav li.selected-item4 a,
+nav#mainnav li.selected-item4 a:hover {
+color:#80B763;
+font-weight:bold;
+background: #fff;
+} 
+</style>
+<table id="example" class="display" style="width:100%">
+<thead>
+<tr>
+<th>ACC/NO</th><th>Date</th><th>Name</th><th>Contact</th><th>Address</th><th>Email</th></tr>
+</thead>
+<tbody>
+{%for my_member in my_member%}
+<tr>
+<td>{{my_member.nu_account_no}}</td><td>{{my_member.dt_date}}</td><td>{{my_member.vc_full_name}}</td><td>{{my_member.vc_contact}}</td><td>{{my_member.vc_address}}</td><td>{{my_member.vc_email}}</td>
+</tr>
+{%endfor%}
+</tbody>
+</table> 
+{%elif my_var=="ViewDeposits"%}
+ <style>   
+nav#mainnav li.selected-item5  {
+border-bottom:none;
+}
+nav#mainnav li.selected-item5 a,
+nav#mainnav li.selected-item5 a:hover {
+color:#80B763;
+font-weight:bold;
+background: #fff;
+} 
+</style>
+<table id="example" class="display" style="width:100%">
+<thead>
+<tr>
+<th>ACC/NO</th><th>Date</th><th>Cashier</th><th>Amount Ugx</th></tr>
+</thead>
+<tbody>
+{%for my_all_dep in my_all_dep%}
+<tr>
+<td>{{my_all_dep.nu_account_no}}</td><td>{{my_all_dep.dt_date}}</td><td>{{my_all_dep.vc_cashier}}</td><td>{{"{:,}".format(my_all_dep.nu_amt)}}</td>
+</tr> 
+{%endfor%}
+{%for dep_sum_all in dep_sum_all%}
+<tr><td></td><td></td><td>GRAND TOTAL UGX: </td><td>{{"{:,}".format(dep_sum_all.sum_amt)}}</td></tr>
+{%endfor%}
+</tbody>
+</table>   
+{%else%}
+<style>   
+nav#mainnav li.selected-item1  {
+border-bottom:none;
+}
+nav#mainnav li.selected-item1 a,
+nav#mainnav li.selected-item1 a:hover {
+color:#80B763;
+font-weight:bold;
+background: #fff;
+} 
+</style>
+{% if my_var=="SUCCESS-REG"%}
+<p>Member is Enrolled successfully</p>
+{%elif my_var=="SUCCESS-DEP"%}
+ <p>Member Deposit is added successfully</p>
+{%elif my_var=="SUCCESS-LOAN"%}
+ <p>Member Loan is added successfully</p>  
+{%endif%}
+<table id="example" class="display" style="width:100%">
+<thead>
+<tr>
+<th>ACC/NO</th><th>Date</th><th>Cashier</th><th>Amount Ugx</th></tr>
+</thead>
+<tbody>
+{%for my_deposit in my_deposit%}
+<tr>
+<td>{{my_deposit.nu_account_no}}</td><td>{{my_deposit.dt_date}}</td><td>{{my_deposit.vc_cashier}}</td><td>{{"{:,}".format(my_deposit.nu_amt)}}</td>
+</tr> 
+{%endfor%}
+{%for qry_sum_dep in qry_sum_dep%}
+<tr><td></td><td></td><td>GRAND TOTAL UGX:</td><td>{{"{:,}".format(qry_sum_dep.sum_amt)}}</td></tr>
+{%endfor%}
+</tbody>
+</table>  
+{%endif%}     
+</aside>    
+</secton>
 </body>
 </html>
+<!--COMFIRM LOGOUT BOX -->
+ <script type="text/javascript">
+ function getConfirmation(){
+ var retVal = confirm("Do you want to continue ?");
+ if( retVal == true ){
+ window.location.href = "/logout";
+ return true;
+ }
+ else{
+ return false;
+ }
+ }
+</script>
 {% endblock %}	
