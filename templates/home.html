@@ -20,11 +20,13 @@
 <nav id="mainnav">
 <ul>
 <li class="selected-item1"><a href="/">Home</a></li>
+ {%if session['user_type']=="ADMIN"%}
 <li class="selected-item2" ><a href="{{ url_for('SwitchPanel', my_var='AddMember') }}">Add A Member</a></li>
 <li class="selected-item3"><a href="{{ url_for('SwitchPanel', my_var='FilterDeposit') }}">Add Deposit</a></li>
 <li class="selected-item4"><a href="{{ url_for('SwitchPanel', my_var='ViewMembers') }}">View All Members</a></li>
 <li class="selected-item5"><a href="{{ url_for('SwitchPanel', my_var='ViewDeposits') }}">View All Deposits</a></li>
 <li class="selected-item6"><a href="{{ url_for('SwitchPanel', my_var='AddLoan') }}">Add Loan</a></li>
+ {%endif%}
 <li><a href="#">Your Loan</a></li>
 <li><a onclick="getConfirmation();">Logout</a></li>
 </ul>
@@ -55,12 +57,15 @@ background: #fff;
              <h4>Account Number and Member Full Name is required !!</h4>
              {%endif%}
             <fieldset>
+            Given Account Number:    
             <input placeholder="Account Number" value="{{request.form['account_no']}}" type="text" name="account_no" tabindex="1" required autofocus>
             </fieldset>
             <fieldset>
+            Full Name:   
             <input placeholder="Full Name" type="text"  value="{{request.form['full_name']}}" name="full_name" tabindex="2" required>
             </fieldset>
             <fieldset>
+            Gender:  
             <select name="gender" tabindex="2" required>
              <option>{{request.form['gender']}}</option>
              <option>MALE</option>  
@@ -68,21 +73,27 @@ background: #fff;
             </select>
             </fieldset>
             <fieldset>
+            Personal Contact    
             <input placeholder="Your Phone Number (optional)"  value="{{request.form['contact']}}" name="contact" type="tel" tabindex="3" required>
             </fieldset>
             <fieldset>
+            Home Address    
             <input placeholder="Address" type="text"  value="{{request.form['address']}}" name="address" tabindex="4" required>
             </fieldset>
              <fieldset>
+            Email Address:     
             <input placeholder="Email" type="email"  value="{{request.form['email']}}" name="email" tabindex="4" required>
             </fieldset>
              <fieldset>
+            Password:     
             <input placeholder="Password" type="password"  value="{{request.form['password']}}" name="password" tabindex="4" required>
             </fieldset>
             <fieldset>
+            Registration Date:    
             <input placeholder="Reg Date" type="date"  value="{{request.form['reg_date']}}" name="reg_date" tabindex="4" required>
             </fieldset>    
             <fieldset>
+            Member TYpe:  
             <select name="user_type" tabindex="2" required>
              <option>{{request.form['user_type']}}</option>    
              <option>ADMIN</option>  
@@ -114,18 +125,21 @@ background: #fff;
              {%elif my_var=="LOAN-EMPTY_FIELDS"%}
              <h4>Account Number and Deposit Amount is required !!</h4>
              {%endif%}
-            <fieldset>
-            <select name="account_no" tabindex="2" required>
+             <fieldset>
+             Member ACC/NO    
+             <select name="account_no" tabindex="2" required>
              <option>{{request.form['account_no']}}</option> 
              {% for my_member in my_member %}
              <option>{{my_member.nu_account_no}}</option>  
              {%endfor%}
-            </select>
+             </select>
             </fieldset>
             <fieldset>
+            Loan Amount:    
             <input placeholder="Loan Amount Ugx"  value="{{request.form['amt']}}" name="amt" type="number" tabindex="3" required>
             </fieldset>
             <fieldset>
+            Loan Type    
             <select name="added_by" tabindex="4" required>   
             <option>{{request.form['added_by']}}</option>
             <option>BUYING LAND</option> 
@@ -133,12 +147,15 @@ background: #fff;
             </select> 
              </fieldset>
             <fieldset>
+            Registration Date:   
             <input placeholder="Reg Date" type="date"  value="{{request.form['reg_date']}}" name="reg_date" tabindex="4" required>
             </fieldset> 
             <fieldset>
+             Cashier Name:   
             <input placeholder="Cashier Name" type="text"  value="{{session['full_name']}}" name="cashier_name" tabindex="4" required>
             </fieldset>
              <fieldset>
+             Loan Description:
             <TextArea placeholder="Loan Full Description" type="text" name="loan_desc" tabindex="4" required>{{request.form['loan_desc']}}</TextArea>
             </fieldset>   
             <fieldset>
@@ -167,6 +184,7 @@ background: #fff;
              <h4>Account Number and Deposit Amount is required !!</h4>
              {%endif%}
             <fieldset>
+            Member ACC/NO:    
             <select name="account_no" tabindex="2" required>
              <option>{{request.form['account_no']}}</option> 
              {% for my_member in my_member %}
@@ -175,15 +193,19 @@ background: #fff;
             </select>
             </fieldset>
             <fieldset>
+            Deposit Amount:    
             <input placeholder="Amount Deposited Ugx"  value="{{request.form['amt']}}" name="amt" type="number" tabindex="3" required>
             </fieldset>
             <fieldset>
+            Deposited By:    
             <input placeholder="Deposited By" type="text"  value="{{request.form['deposited_by']}}" name="deposited_by" tabindex="4" required>
             </fieldset>
             <fieldset>
+            Registration Date:    
             <input placeholder="Reg Date" type="date"  value="{{request.form['reg_date']}}" name="reg_date" tabindex="4" required>
             </fieldset> 
             <fieldset>
+            Cashier Name:    
             <input placeholder="Cashier Name" type="text"  value="{{session['full_name']}}" name="cashier_name" tabindex="4" required>
             </fieldset>
             <fieldset>

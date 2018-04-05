@@ -23,7 +23,9 @@
 </head>
 {% block body %}
 {% if session['logged_in'] %}
-<p>You're logged in already!</p>
+<script>
+ window.location.href = "/SwitchPanel";    
+</script>
 {% else %}
 <body>
 	<div class="limiter">

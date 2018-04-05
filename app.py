@@ -35,6 +35,7 @@ def do_admin_login():
 				session['logged_in']=True
 				session['account_no']=my_user.nu_account_no
 				session['full_name']=my_user.vc_full_name
+				session['user_type']=my_user.user_type
 				return home()
 			else:
 				pass
