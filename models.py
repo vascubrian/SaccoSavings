@@ -76,14 +76,16 @@ class LoanList(BaseModel,db.Model):
     vc_loan_desc=db.Column(db.String)
     vc_added_by=db.Column(db.String)
     vc_cashier=db.Column(db.String)
+    vc_cleared_status=db.Column(db.String)
 
-    def __init__(self,nu_account_no,nu_amt,dt_date,vc_loan_desc,vc_added_by,vc_cashier):
+    def __init__(self,nu_account_no,nu_amt,dt_date,vc_loan_desc,vc_added_by,vc_cashier,vc_cleared_status):
         self.nu_account_no =nu_account_no
         self.nu_amt=nu_amt
         self.dt_date=dt_date
         self.vc_loan_desc=vc_loan_desc
         self.vc_added_by=vc_added_by
-        self.vc_cashier=vc_cashier        
+        self.vc_cashier=vc_cashier
+        self.vc_cleared_status=vc_cleared_status        
 
 
 
