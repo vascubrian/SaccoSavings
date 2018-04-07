@@ -26,8 +26,9 @@
 <li class="selected-item4"><a href="{{ url_for('SwitchPanel', my_var='ViewMembers') }}">View All Members</a></li>
 <li class="selected-item5"><a href="{{ url_for('SwitchPanel', my_var='ViewDeposits') }}">View All Deposits</a></li>
 <li class="selected-item6"><a href="{{ url_for('SwitchPanel', my_var='AddLoan') }}">Add Loan</a></li>
+<li class="selected-itemX6"><a href="{{ url_for('SwitchPanel', my_var='ViewLoan') }}">View Members With Loans</a></li>
  {%endif%}
-<li><a href="#">Your Loan</a></li>
+<li><a class="selected-item7" href="{{ url_for('SwitchPanel', my_var='LoanInfo') }}">Your Loan</a></li>
 <li><a onclick="getConfirmation();">Logout</a></li>
 </ul>
 </nav>		     
@@ -104,6 +105,73 @@ background: #fff;
             <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
             </fieldset>
            </form> 
+{% elif my_var=="MemberUpdateForm"%}
+<style>
+nav#mainnav li.selected-item2  {
+border-bottom:none;
+}
+nav#mainnav li.selected-item2 a,
+nav#mainnav li.selected-item2 a:hover {
+color:#80B763;
+font-weight:bold;
+background: #fff;
+}      
+</style> 
+ <form id="contact" action="/ExecuteUpdateMember" method="post">
+{%for member_edit in member_edit%}
+            <h3>Update Members</h3>
+            <fieldset>   
+            <input placeholder="Account Number" value="{{member_edit.nu_account_no}}" type="hidden" name="update_account_no" tabindex="1" required autofocus>
+            </fieldset>
+            <fieldset>
+            Given Account Number:    
+            <input placeholder="Account Number" value="{{member_edit.nu_account_no}}" type="text" name="account_no" tabindex="1" required autofocus>
+            </fieldset>
+            <fieldset>
+            Full Name:   
+            <input placeholder="Full Name" type="text"  value="{{member_edit.vc_full_name}}" name="full_name" tabindex="2" required>
+            </fieldset>
+            <fieldset>
+            Gender:  
+            <select name="gender" tabindex="2" required>
+             <option>{{member_edit.vc_gender}}</option>
+             <option>MALE</option>  
+             <option>FEMALE</option>
+            </select>
+            </fieldset>
+            <fieldset>
+            Personal Contact    
+            <input placeholder="Your Phone Number (optional)"  value="{{member_edit.vc_contact}}" name="contact" type="tel" tabindex="3" required>
+            </fieldset>
+            <fieldset>
+            Home Address    
+            <input placeholder="Address" type="text"  value="{{member_edit.vc_address}}" name="address" tabindex="4" required>
+            </fieldset>
+             <fieldset>
+            Email Address:     
+            <input placeholder="Email" type="email"  value="{{member_edit.vc_email}}" name="email" tabindex="4" required>
+            </fieldset>
+             <fieldset>
+            Password:     
+            <input placeholder="Password" type="password"  value="{{member_edit.vc_pass_word}}" name="password" tabindex="4" required>
+            </fieldset>
+            <fieldset>
+            Registration Date:    
+            <input placeholder="Reg Date" type="date"  value="{{member_edit.dt_date}}" name="reg_date" tabindex="4" required>
+            </fieldset>    
+            <fieldset>
+            Member TYpe:  
+            <select name="user_type" tabindex="2" required>
+             <option>{{member_edit.user_type}}</option>    
+             <option>ADMIN</option>  
+             <option>MEMBER</option>
+            </select>
+            </fieldset>
+            <fieldset>
+            <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Update</button>
+            </fieldset> 
+{%endfor%}
+</form>
 {% elif my_var=="AddLoan" or my_var=="LOAN-EXISTS" or my_var=="LOAN-INVALID_ENTRY" or my_var=="LOAN-EMPTY_FIELDS"%}
 <style>
 nav#mainnav li.selected-item6  {
@@ -157,11 +225,83 @@ background: #fff;
              <fieldset>
              Loan Description:
             <TextArea placeholder="Loan Full Description" type="text" name="loan_desc" tabindex="4" required>{{request.form['loan_desc']}}</TextArea>
-            </fieldset>   
+            </fieldset>
+            <fieldset>
+            Cleared Status: 
+            <select name="clear_status" tabindex="4" required>   
+            <option>{{request.form['clear_status']}}</option>
+            <option>NO</option> 
+            <option>YES</option>  
+            </select> 
+             </fieldset>    
             <fieldset>
             <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
             </fieldset>
-           </form>      
+           </form>
+{% elif my_var=="LoanUpdateForm"%}
+<style>
+nav#mainnav li.selected-item6  {
+border-bottom:none;
+}
+nav#mainnav li.selected-item6 a,
+nav#mainnav li.selected-item6 a:hover {
+color:#80B763;
+font-weight:bold;
+background: #fff;
+}      
+</style>    
+<form id="contact" action="/ExecuteUpdateLoan" method="post">
+ {%for loan_edit in loan_edit%}
+            <h3>Update Loan</h3>
+            <fieldset>  
+            <input value="{{loan_edit.nu_trans_id}}" name="nu_trans_id" type="hidden" tabindex="3" required>
+            </fieldset>
+             <fieldset>
+             Member ACC/NO    
+             <select name="account_no" tabindex="2" required>
+             <option>{{loan_edit.nu_account_no}}</option> 
+             {% for my_member in my_member %}
+             <option>{{my_member.nu_account_no}}</option>  
+             {%endfor%}
+             </select>
+            </fieldset>
+            <fieldset>
+            Loan Amount:    
+            <input placeholder="Loan Amount Ugx"  value="{{loan_edit.nu_amt}}" name="amt" type="number" tabindex="3" required>
+            </fieldset>
+            <fieldset>
+            Loan Type    
+            <select name="added_by" tabindex="4" required>   
+            <option>{{loan_edit.vc_added_by}}</option>
+            <option>BUYING LAND</option> 
+            <option>DIRECT LOAN</option>  
+            </select> 
+             </fieldset>
+            <fieldset>
+            Registration Date:   
+            <input placeholder="Reg Date" type="date"  value="{{loan_edit.dt_date}}" name="reg_date" tabindex="4" required>
+            </fieldset> 
+            <fieldset>
+             Cashier Name:   
+            <input placeholder="Cashier Name" type="text"  value="{{loan_edit.vc_cashier}}" name="cashier_name" tabindex="4" required>
+            </fieldset>
+             <fieldset>
+             Loan Description:
+            <TextArea placeholder="Loan Full Description" type="text" name="loan_desc" tabindex="4" required>{{loan_edit.vc_loan_desc}}</TextArea>
+            </fieldset>
+            <fieldset>
+            Cleared Status: 
+            <select name="clear_status" tabindex="4" required>   
+            <option>{{loan_edit.vc_cleared_status}}</option>
+            <option>NO</option> 
+            <option>YES</option>  
+            </select> 
+             </fieldset>    
+            <fieldset>
+            <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Update</button>
+            </fieldset>
+{%endfor%}
+</form>          
 {%elif my_var=="FilterDeposit" or my_var=="DEP-EXISTS" or my_var=="DEP-INVALID_ENTRY" or my_var=="DEP-EMPTY_FIELDS"%}
 <style>
 nav#mainnav li.selected-item3  {
@@ -211,8 +351,58 @@ background: #fff;
             <fieldset>
             <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
             </fieldset>
-           </form>   
-{%elif my_var=="ViewMembers" %}
+           </form>  
+{%elif my_var=="DepositUpdateForm"%}
+<style>
+nav#mainnav li.selected-item3  {
+border-bottom:none;
+}
+nav#mainnav li.selected-item3 a,
+nav#mainnav li.selected-item3 a:hover {
+color:#80B763;
+font-weight:bold;
+background: #fff;
+}      
+</style>    
+<form id="contact" action="/ExecuteUpdateDeposit" method="post">
+{%for deposit_edit in deposit_edit%}
+    
+            <h3>Update Deposit</h3>
+            <fieldset>  
+            <input value="{{deposit_edit.nu_trans_id}}" name="nu_trans_id" type="hidden" tabindex="3" required>
+            </fieldset>   
+            <fieldset>
+            Member ACC/NO:    
+            <select name="account_no" tabindex="2" required>
+             <option>{{deposit_edit.nu_account_no}}</option> 
+             {% for my_member in my_member %}
+             <option>{{my_member.nu_account_no}}</option>  
+             {%endfor%}
+            </select>
+            </fieldset>
+            <fieldset>
+            Deposit Amount:    
+            <input placeholder="Amount Deposited Ugx"  value="{{deposit_edit.nu_amt}}" name="amt" type="number" tabindex="3" required>
+            </fieldset>
+            <fieldset>
+            Deposited By:    
+            <input placeholder="Deposited By" type="text"  value="{{deposit_edit.vc_dep_by}}" name="deposited_by" tabindex="4" required>
+            </fieldset>
+            <fieldset>
+            Registration Date:    
+            <input placeholder="Reg Date" type="date"  value="{{deposit_edit.dt_date}}" name="reg_date" tabindex="4" required>
+            </fieldset> 
+            <fieldset>
+            Cashier Name:    
+            <input placeholder="Cashier Name" type="text"  value="{{deposit_edit.vc_cashier}}" name="cashier_name" tabindex="4" required>
+            </fieldset>
+            <fieldset>
+            <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Update</button>
+            </fieldset>
+    
+{%endfor%}
+</form>     
+{%elif my_var=="ViewMembers" or my_var=="SUCCESS-UPDATE" or my_var=="INVALID_DELETE" or my_var=="SUCCESS-DELETE"%}
 <style>   
 nav#mainnav li.selected-item4  {
 border-bottom:none;
@@ -224,20 +414,33 @@ font-weight:bold;
 background: #fff;
 } 
 </style>
+{%if my_var=="SUCCESS-UPDATE"%}
+<h4>Data is updated successfully</h4>
+{%elif my_var=="INVALID_UPDATE"%}
+<h4>Update Error</h4> 
+{%elif my_var=="SUCCESS-DELETE"%}
+<h4>Data is deleted successfully</h4>
+{%elif my_var=="INVALID_DELETE"%}
+<h4>Delete Error</h4> 
+{%endif%}   
 <table id="example" class="display" style="width:100%">
 <thead>
 <tr>
-<th>ACC/NO</th><th>Date</th><th>Name</th><th>Contact</th><th>Address</th><th>Email</th></tr>
+<th>ACC/NO</th><th>Date</th><th>Name</th><th>Contact</th><th>Address</th><th>Email</th><th></th><th></th></tr>
 </thead>
 <tbody>
+{%if my_member%}
 {%for my_member in my_member%}
 <tr>
-<td>{{my_member.nu_account_no}}</td><td>{{my_member.dt_date}}</td><td>{{my_member.vc_full_name}}</td><td>{{my_member.vc_contact}}</td><td>{{my_member.vc_address}}</td><td>{{my_member.vc_email}}</td>
+<td>{{my_member.nu_account_no}}</td><td>{{my_member.dt_date}}</td><td>{{my_member.vc_full_name}}</td><td>{{my_member.vc_contact}}</td><td>{{my_member.vc_address}}</td><td>{{my_member.vc_email}}</td><td><a href="{{ url_for('UpdateMembers', my_var=my_member.nu_account_no) }}" title="Edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+</a></td><td><a href="{{ url_for('DeleteMembers', my_var=my_member.nu_account_no) }}" title="Delete" onclick="DeleteMember()"><i class="fa fa-trash" aria-hidden="true"></i>
+</a></td>
 </tr>
 {%endfor%}
 </tbody>
+{%endif%}
 </table> 
-{%elif my_var=="ViewDeposits"%}
+{%elif my_var=="ViewDeposits" or my_var=="SUCCESS-DEPOSIT-UPDATE" or my_var=="INVALID_DEPOSIT_UPDATE" or my_var=="SUCCESS-DEPOSIT-DELETE" or my_var=="INVALID_DEPOSIT_DELETE"%}
  <style>   
 nav#mainnav li.selected-item5  {
 border-bottom:none;
@@ -249,22 +452,106 @@ font-weight:bold;
 background: #fff;
 } 
 </style>
+{%if my_var=="SUCCESS-DEPOSIT-UPDATE"%}
+<h4>Data is updated successfully</h4>
+{%elif my_var=="INVALID_DEPOSIT_UPDATE"%}
+<h4>Update Error</h4> 
+{%elif my_var=="SUCCESS-DEPOSIT-DELETE"%}
+<h4>Data is deleted successfully</h4>
+{%elif my_var=="INVALID_DEPOSIT_DELETE"%}
+<h4>Delete Error</h4> 
+{%endif%}         
 <table id="example" class="display" style="width:100%">
 <thead>
 <tr>
-<th>ACC/NO</th><th>Date</th><th>Cashier</th><th>Amount Ugx</th></tr>
+<th>ACC/NO</th><th>Date</th><th>Cashier</th><th>Amount Ugx</th><th></th><th></th></tr>
 </thead>
 <tbody>
+{%if my_all_dep%}
 {%for my_all_dep in my_all_dep%}
 <tr>
-<td>{{my_all_dep.nu_account_no}}</td><td>{{my_all_dep.dt_date}}</td><td>{{my_all_dep.vc_cashier}}</td><td>{{"{:,}".format(my_all_dep.nu_amt)}}</td>
+<td>{{my_all_dep.nu_account_no}}</td><td>{{my_all_dep.dt_date}}</td><td>{{my_all_dep.vc_cashier}}</td><td>{{"{:,}".format(my_all_dep.nu_amt)}}</td><td><a href="{{ url_for('UpdateDeposit', my_var=my_all_dep.nu_trans_id) }}" title="Edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+</a></td><td><a href="{{ url_for('DeleteDeposit', my_var=my_all_dep.nu_trans_id) }}" title="Delete" onclick="DeleteDeposit()"><i class="fa fa-trash" aria-hidden="true"></i>
+</a></td>
 </tr> 
 {%endfor%}
 {%for dep_sum_all in dep_sum_all%}
 <tr><td></td><td></td><td>GRAND TOTAL UGX: </td><td>{{"{:,}".format(dep_sum_all.sum_amt)}}</td></tr>
 {%endfor%}
+{%endif%}
 </tbody>
-</table>   
+</table>
+{%elif my_var=="LoanInfo"%}
+<style>   
+nav#mainnav li.selected-item7  {
+border-bottom:none;
+}
+nav#mainnav li.selected-item7 a,
+nav#mainnav li.selected-item7 a:hover {
+color:#80B763;
+font-weight:bold;
+background: #fff;
+} 
+</style>
+<table id="example" class="display" style="width:100%">
+<thead>
+<tr>
+<th>ACC/NO</th><th>Date</th><th>Cashier</th><th>Amount Ugx</th><th>Purpose</th><th>Status</th></tr>
+</thead>
+<tbody>
+{%if my_loan%}
+{%for my_loan in my_loan%}
+<tr>
+<td>{{my_loan.nu_account_no}}</td><td>{{my_loan.dt_date}}</td><td>{{my_loan.vc_cashier}}</td><td>{{"{:,}".format(my_loan.nu_amt)}}</td><td>{{my_loan.vc_added_by}}</td><td>{{my_loan.vc_cleared_status}}</td>
+</tr> 
+{%endfor%}
+{%for loan_sum in loan_sum%}
+<tr><td></td><td></td><td>GRAND TOTAL UGX:</td><td>{{"{:,}".format(loan_sum.sum_amt)}}</td></tr>
+{%endfor%}
+ {%endif%}
+</tbody>
+</table>  
+{%elif my_var=="ViewLoan" or my_var=="SUCCESS-LOAN-UPDATE" or my_var=="INVALID_LOAN_UPDATE" or my_var=="SUCCESS-LOAN-DELETE" or my_var=="INVALID_LOAN_DELETE"%}
+<style>   
+nav#mainnav li.selected-itemx6  {
+border-bottom:none;
+}
+nav#mainnav li.selected-itemx6 a,
+nav#mainnav li.selected-itemx6 a:hover {
+color:#80B763;
+font-weight:bold;
+background: #fff;
+} 
+</style>
+{%if my_var=="SUCCESS-LOAN-UPDATE"%}
+<h4>Data is updated successfully</h4>
+{%elif my_var=="INVALID_LOAN_UPDATE"%}
+<h4>Update Error</h4> 
+{%elif my_var=="SUCCESS-LOAN-DELETE"%}
+<h4>Data is deleted successfully</h4>
+{%elif my_var=="INVALID_LOAN_DELETE"%}
+<h4>Delete Error</h4> 
+{%endif%}  
+<table id="example" class="display" style="width:100%">
+<thead>
+<tr>
+<th>ACC/NO</th><th>Date</th><th>Cashier</th><th>Amount Ugx</th><th>Purpose</th><th>Status</th><th></th><th></th></tr>
+</thead>
+<tbody>
+{%if loan_all%}
+{%for loan_all in loan_all%}
+<tr>
+<td>{{loan_all.nu_account_no}}</td><td>{{loan_all.dt_date}}</td><td>{{loan_all.vc_cashier}}</td><td>{{"{:,}".format(loan_all.nu_amt)}}</td><td>{{loan_all.vc_added_by}}</td><td>{{loan_all.vc_cleared_status}}</td><td><a href="{{ url_for('UpdateLoan', my_var=loan_all.nu_trans_id) }}" title="Edit"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+</a></td><td><a href="{{ url_for('DeleteLoan', my_var=loan_all.nu_trans_id) }}" title="Delete" onclick="DeleteLoan()"><i class="fa fa-trash" aria-hidden="true"></i>
+</a></td>
+</tr> 
+{%endfor%}
+{%for loan_sum_all in loan_sum_all%}
+<tr><td></td><td></td><td>GRAND TOTAL UGX:</td><td>{{"{:,}".format(loan_sum_all.sum_amt)}}</td></tr>
+{%endfor%}
+{%endif%}
+</tbody>
+</table>    
 {%else%}
 <style>   
 nav#mainnav li.selected-item1  {
@@ -290,6 +577,7 @@ background: #fff;
 <th>ACC/NO</th><th>Date</th><th>Cashier</th><th>Amount Ugx</th></tr>
 </thead>
 <tbody>
+{%if my_deposit%}
 {%for my_deposit in my_deposit%}
 <tr>
 <td>{{my_deposit.nu_account_no}}</td><td>{{my_deposit.dt_date}}</td><td>{{my_deposit.vc_cashier}}</td><td>{{"{:,}".format(my_deposit.nu_amt)}}</td>
@@ -299,6 +587,7 @@ background: #fff;
 <tr><td></td><td></td><td>GRAND TOTAL UGX:</td><td>{{"{:,}".format(qry_sum_dep.sum_amt)}}</td></tr>
 {%endfor%}
 </tbody>
+{%endif%}
 </table>  
 {%endif%}     
 </aside>    
@@ -311,6 +600,36 @@ background: #fff;
  var retVal = confirm("Do you want to continue ?");
  if( retVal == true ){
  window.location.href = "/logout";
+ return true;
+ }
+ else{
+ return false;
+ }
+ }
+ function DeleteMember(){
+ var retVal = confirm("Do you want to continue ?");
+ if( retVal == true ){
+ window.location.href = "/DeleteMember";
+ return true;
+ }
+ else{
+ return false;
+ }
+ }
+function DeleteDeposit(){
+ var retVal = confirm("Do you want to continue ?");
+ if( retVal == true ){
+ window.location.href = "/DeleteDeposit";
+ return true;
+ }
+ else{
+ return false;
+ }
+ }
+ function DeleteLoan(){
+ var retVal = confirm("Do you want to continue ?");
+ if( retVal == true ){
+ window.location.href = "/DeleteLoan";
  return true;
  }
  else{
