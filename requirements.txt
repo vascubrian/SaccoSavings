@@ -1,3 +1,4 @@
+python==3.6.4
 adium-theme-ubuntu==0.3.4
 alembic==0.9.6
 amqp==2.2.2
