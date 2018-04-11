@@ -14,8 +14,8 @@
 <secton id="body">
 <aside id="column_left">
 <header>
-<h1><a href="#">TISIG</a></h1>
-<h2>Treasure Island Savings And Investment Group</h2>
+<h1><a href="#">{{session['comp_abrev']}}</a></h1>
+<h2>{{session['comp_name']}}</h2>
 </header>
 <nav id="mainnav">
 <ul>
@@ -27,16 +27,104 @@
 <li class="selected-item5"><a href="{{ url_for('SwitchPanel', my_var='ViewDeposits') }}">View All Deposits</a></li>
 <li class="selected-item6"><a href="{{ url_for('SwitchPanel', my_var='AddLoan') }}">Add Loan</a></li>
 <li class="selected-itemX6"><a href="{{ url_for('SwitchPanel', my_var='ViewLoan') }}">View Members With Loans</a></li>
+<li class="comp_info"><a href="{{ url_for('SwitchPanel', my_var='CompanyInfo') }}">Company Info</a></li>   
  {%endif%}
-<li><a class="selected-item7" href="{{ url_for('SwitchPanel', my_var='LoanInfo') }}">Your Loan</a></li>
+ <li class="selected-item7" ><a href="{{ url_for('SwitchPanel', my_var='LoanInfo') }}">Your Loan</a></li>   
+<li class="selected-item8"><a href="{{ url_for('SwitchPanel', my_var='ChangePassword') }}">Change Your Password</a></li>   
 <li><a onclick="getConfirmation();">Logout</a></li>
 </ul>
 </nav>		     
 </aside>
 <aside id="column_right">
 <h2>Your Account Outstanding</h2>
-<div class="article-info">Logged In AS {% print session['full_name'] %} By Account No:{% print session['account_no'] %}</div>    
-{% if my_var=="AddMember" or my_var=="EXISTS" or my_var=="INVALID_ENTRY" or my_var=="EMPTY_FIELDS"%}
+<div class="article-info">Logged In AS {% print session['full_name'] %} By Account No:{% print session['account_no'] %}</div>  
+{% if my_var=="CompanyInfo" or my_var=="COMPANY-EXISTS" or my_var=="COMPANY-INVALID_ENTRY" or my_var=="COMPANY-EMPTY_FIELDS"%}
+<style>
+nav#mainnav li.comp_info  {
+border-bottom:none;
+}
+nav#mainnav li.comp_info a,
+nav#mainnav li.comp_info a:hover {
+color:#80B763;
+font-weight:bold;
+background: #fff;
+}      
+</style>    
+            <form id="contact" action="/UpdateCompanyInfo" method="post">
+            <h3>Change Your Password</h3>
+             {% if my_var=="COMPANY-EXISTS"%}
+             <h4>Password Not matching !!!</h4>
+             {%elif my_var=="COMPANY-INVALID_ENTRY"%}
+             <h4>Invalid Entry !!!</h4>
+             {%elif my_var=="COMPANY-EMPTY_FIELDS"%}
+             <h4>All fields are required !!!</h4>
+             {%endif%}
+            <fieldset>
+            Company Name :    
+            <input placeholder="Company Name" value="{{session['comp_name']}}" type="text" name="comp_name" tabindex="1" required autofocus>
+            </fieldset>
+            <fieldset>
+            Company Address :    
+            <input placeholder="Company Address" value="{{session['comp_address']}}" type="text" name="comp_address" tabindex="1" required autofocus>
+            </fieldset>
+            <fieldset>
+            Company Abbrev :    
+            <input placeholder="Company Abbrev" value="{{session['comp_abrev']}}" type="text" name="comp_abrev" tabindex="1" required autofocus>
+            </fieldset>
+            <fieldset>
+            Company Contact :    
+            <input placeholder="Company Contact" value="{{session['comp_contact']}}" type="text" name="comp_contact" tabindex="1" required autofocus>
+            </fieldset>
+            <fieldset>
+            Company Slogan :    
+            <input placeholder="Company Slogan" value="{{session['comp_slogan']}}" type="text" name="comp_slogan" tabindex="1" required autofocus>
+            </fieldset>
+            <fieldset>
+            Email:    
+            <input placeholder="email" value="{{session['comp_email']}}" type="text" name="comp_email" tabindex="1" required autofocus>
+            </fieldset>
+            <fieldset>
+            Website :    
+            <input placeholder="website" value="{{session['comp_website']}}" type="text" name="comp_website" tabindex="1" required autofocus>
+            </fieldset>
+            <fieldset>
+            <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Update</button>
+</fieldset>
+</form>     
+{% elif my_var=="ChangePassword" or my_var=="PASSWORD-EXISTS" or my_var=="PASSWORD-INVALID_ENTRY" or my_var=="PASSWORD-EMPTY_FIELDS"%}
+<style>
+nav#mainnav li.selected-item8  {
+border-bottom:none;
+}
+nav#mainnav li.selected-item8 a,
+nav#mainnav li.selected-item8 a:hover {
+color:#80B763;
+font-weight:bold;
+background: #fff;
+}      
+</style>    
+            <form id="contact" action="/UpdatePassword" method="post">
+            <h3>Change Your Password</h3>
+             {% if my_var=="PASSWORD-EXISTS"%}
+             <h4>Password Not matching !!!</h4>
+             {%elif my_var=="PASSWORD-INVALID_ENTRY"%}
+             <h4>Invalid Entry !!!</h4>
+             {%elif my_var=="PASSWORD-EMPTY_FIELDS"%}
+             <h4>All fields are required !!!</h4>
+             {%endif%}
+            <fieldset>
+            Your New Password :    
+            <input placeholder="Password" value="{{request.form['password']}}" type="password" name="password" tabindex="1" required autofocus>
+            </fieldset>
+            <fieldset>
+            Comfirm Password:   
+            <input placeholder="Comfirm" type="password"  value="{{request.form['comfirm_password']}}" name="comfirm_password" tabindex="2" required>
+            </fieldset>
+            <fieldset>
+            <button name="submit" type="submit" id="contact-submit" data-submit="...Sending">Change</button>
+</fieldset>
+</form>    
+{%elif my_var=="AddMember" or my_var=="EXISTS" or my_var=="INVALID_ENTRY" or my_var=="EMPTY_FIELDS"%}
 <style>
 nav#mainnav li.selected-item2  {
 border-bottom:none;
