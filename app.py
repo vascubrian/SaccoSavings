@@ -40,7 +40,7 @@ def do_admin_login():
 	if request.form['account_no'] == '' or request.form['user_pass'] == '' or request.form['sacco_code']=='':
 		return render_template('index.html', my_var=request.args.get('invalid_detail', 'EMPTY_FIELDS'))	
 	else:	
-		try:
+		#try:
 			my_user=db.session.query(UserLogin).filter_by(nu_account_no=request.form['account_no'],vc_pass_word=request.form['user_pass'],vc_comp_code=request.form['sacco_code']).first()
 			if my_user is not None:
 				session['logged_in']=True
@@ -53,9 +53,9 @@ def do_admin_login():
 			else:
 				pass
 	    		return render_template('index.html', my_var=request.args.get('invalid_detail', 'INVALID_USER'))
-		except:
-			pass
-        	return render_template('index.html', my_var=request.args.get('invalid_detail', 'INVALID_USER'))
+		#except:
+			#pass
+        	#return render_template('index.html', my_var=request.args.get('invalid_detail', 'INVALID_USER'))
 
 @app.route("/logout")
 def logout():
