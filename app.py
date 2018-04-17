@@ -9,7 +9,7 @@ app = Flask(__name__)
 
 
 app.config['DEBUG'] = True
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://sacco_save:123@localhost:5432/sacco_save'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://rulkuthttsoskn:07ac43f350513ff2c995815071e87f34038d889abef554c4f05c08d89c2ad552@ec2-174-129-41-64.compute-1.amazonaws.com:5432/d4d694s5rst81l'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 
